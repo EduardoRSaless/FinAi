@@ -1,0 +1,110 @@
+flowchart LR
+    subgraph API["api (br.com.finai.api)"]
+        subgraph CTRL["controller"]
+            AC["AuthController"]
+            ACC["AccountController"]
+            TC["TransactionController"]
+            TRC["TransferController"]
+            CC["CardController"]
+            GC["GoalController"]
+            DC["DashboardController"]
+            RC["ReportController"]
+            AIC["AiController"]
+        end
+        subgraph DTO["dto"]
+            LR["LoginRequest"]
+            AR["AuthResponse"]
+            ACR["AccountResponse"]
+            TRQ["TransactionRequest"]
+            TRF["TransactionFilter"]
+            TRS["TransactionResponse"]
+            TFQ["TransferRequest"]
+            TFS["TransferResponse"]
+            CD["CardResponse"]
+            CPQ["CardPurchaseRequest"]
+            CPS["CardPurchaseResponse"]
+            IV["InvoiceResponse"]
+            GQ["GoalRequest"]
+            GS["GoalResponse"]
+            CF["CashFlowResponse"]
+            DASH["DashboardResponse"]
+            CHQ["ChatRequest"]
+            CHS["ChatResponse"]
+        end
+    end
+
+    subgraph APP["application"]
+        subgraph SVC["service"]
+            AUTH["AuthenticationService"]
+            ACCS["AccountService"]
+            TS["TransactionService"]
+            TFVS["TransferService"]
+            CS["CardService"]
+            GSVC["GoalService"]
+            DS["DashboardService"]
+            RS["ReportService"]
+            AIS["AiChatService"]
+        end
+        subgraph UC["usecase"]
+            UC1["Casos compostos<br/>(ex.: abrir conta + categoria padrão)"]
+        end
+    end
+
+    subgraph DOM["domain"]
+        subgraph ENT["entity"]
+            U["User"]
+            A["Account"]
+            T["Transaction"]
+            C["Category"]
+            CD2["Card"]
+            CP["CardPurchase"]
+            CI["CreditCardInvoice"]
+            FG["FinancialGoal"]
+        end
+        subgraph EN["enums"]
+            E1["AccountStatus"]
+            E2["TransactionType"]
+            E3["CategoryType"]
+            E4["CardType"]
+            E5["CardStatus"]
+            E6["InvoiceStatus"]
+        end
+        subgraph RL["rules"]
+            TR["TransferRules"]
+            TXR["TransactionRules"]
+        end
+    end
+
+    subgraph INFRA["infrastructure"]
+        subgraph REPO["repository"]
+            UR["UserRepository"]
+            AR2["AccountRepository"]
+            TR2["TransactionRepository"]
+            CR["CategoryRepository"]
+            CDR["CardRepository"]
+            CPR["CardPurchaseRepository"]
+            CIR["CreditCardInvoiceRepository"]
+            FGR["FinancialGoalRepository"]
+        end
+        subgraph SECP["security"]
+            SEC["SecurityConfig"]
+            JWT["JwtService"]
+            JWF["JwtAuthenticationFilter"]
+        end
+        subgraph AIP["ai"]
+            FT["FinancialTools"]
+            AICL["AiChatClient"]
+        end
+        subgraph CFG["config"]
+            GEH["GlobalExceptionHandler"]
+        end
+    end
+
+    CTRL --> SVC
+    CTRL --> DTO
+    SVC --> REPO
+    SVC --> RL
+    REPO --> ENT
+    ENT --> EN
+    AIP --> SVC
+    SECP --> REPO
